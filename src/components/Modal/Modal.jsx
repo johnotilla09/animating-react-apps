@@ -21,7 +21,12 @@ const modal = (props) => {
             in={props.show}
             timeout={animationTiming}
             nodeRef={parentDivRef}
-            classNames="fade-slide"
+            classNames={{
+                enter: "",
+                enterActive: "ModalOpen",
+                exit: "",
+                exitActive: "ModalClosed",
+            }}
         >
             <div ref={parentDivRef} className="Modal">
                 <h1>A Modal</h1>
