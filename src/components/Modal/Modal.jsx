@@ -1,7 +1,7 @@
 import React from "react";
 import { useRef } from "react";
 
-import { Transition } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 
 import "./Modal.css";
 
@@ -15,33 +15,21 @@ const modal = (props) => {
     const parentDivRef = useRef(null);
 
     return (
-        <Transition
+        <CSSTransition
             mountOnEnter
             unmountOnExit
             in={props.show}
             timeout={animationTiming}
             nodeRef={parentDivRef}
+            classNames="fade-slide"
         >
-            {(state) => {
-                const cssClasses = [
-                    "Modal",
-                    state === "entering"
-                        ? "ModalOpen"
-                        : state === "exiting"
-                        ? "ModalClosed"
-                        : null,
-                ];
-
-                return (
-                    <div ref={parentDivRef} className={cssClasses.join(" ")}>
-                        <h1>A Modal</h1>
-                        <button className="Button" onClick={props.closed}>
-                            Dismiss
-                        </button>
-                    </div>
-                );
-            }}
-        </Transition>
+            <div ref={parentDivRef} className="Modal">
+                <h1>A Modal</h1>
+                <button className="Button" onClick={props.closed}>
+                    Dismiss
+                </button>
+            </div>
+        </CSSTransition>
     );
 };
 
