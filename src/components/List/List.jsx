@@ -1,43 +1,63 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { useRef } from "react";
 
-import './List.css';
+import "./List.css";
 
 class List extends Component {
     state = {
-        items: [1, 2, 3]
-    }
+        items: [1, 2, 3],
+    };
+
+    useRef = {
+        parentDivRef: null,
+    };
 
     addItemHandler = () => {
         this.setState((prevState) => {
             return {
-                items: prevState.items.concat(prevState.items.length + 1)
+                items: prevState.items.concat(prevState.items.length + 1),
             };
         });
-    }
+    };
 
     removeItemHandler = (selIndex) => {
         this.setState((prevState) => {
             return {
-                items: prevState.items.filter((item, index) => index !== selIndex)
+                items: prevState.items.filter(
+                    (item, index) => index !== selIndex
+                ),
             };
         });
-    }
+    };
 
-    render () {
-        const listItems = this.state.items.map( (item, index) => (
-            <li 
+    render() {
+        const listItems = this.state.items.map((item, index) => (
+            <CSSTransition
                 key={index}
-                className="ListItem" 
-                onClick={() => this.removeItemHandler(index)}>{item}</li>
-        ) );
+                classNames="fade"
+                timeout={300}
+                nodeRef={this.useRef.parentDivRef}
+            >
+                <li
+                    className="ListItem"
+                    onClick={() => this.removeItemHandler(index)}
+                    ref={this.useRef.parentDivRef}
+                >
+                    {item}
+                </li>
+            </CSSTransition>
+        ));
 
         return (
             <div>
-                <button className="Button" onClick={this.addItemHandler}>Add Item</button>
+                <button className="Button" onClick={this.addItemHandler}>
+                    Add Item
+                </button>
                 <p>Click Item to Remove.</p>
-                <ul className="List">
+                <TransitionGroup component="ul" className="List">
                     {listItems}
-                </ul>
+                </TransitionGroup>
             </div>
         );
     }
